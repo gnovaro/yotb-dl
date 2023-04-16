@@ -6,25 +6,20 @@ import os
 import subprocess
 import tkinter as tk
 
+VERSION = "1.1.0"
+
 
 def download_video(url):
-    # Obtener el nombre del archivo de video
-    file_name_command = "yt-dlp --get-filename -o '%(title)s.%(ext)s' " + url
+    # Get file name from video
+    file_name_command = "yt-dlp --get-filename " + url
     print(file_name_command)
     file_name = subprocess.getoutput(file_name_command)
 
     # Descargar el video en formato mp4
-    command = "yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' " + url
+    command = "yt-dlp " + url + " -f 22"
     os.system(command)
 
-    # Cambiar el nombre del archivo a formato mp4
-    file_name_destination = file_name.replace('.webm', '.mp4').replace('.mkv', '.mp4').replace('.mp4', '.mp4')
-
-    # Renombrar el archivo descargado a formato mp4
-    os.rename(file_name, file_name_destination)
-
-    # Imprimir el nombre del archivo y la ruta de acceso
-    print('Archivo guardado como:', file_name_destination)
+    return file_name
 
 
 def download_audio(url):
@@ -43,35 +38,57 @@ def download_audio(url):
 
     os.remove(file_name)
     # Actualizar la etiqueta de texto de descarga completada
-    download_label.config(text="Descarga completada: " + file_name_destination)
-    window.update()
+    return file_name_destination
 
 
-def on_click():
+def download_media(url, media_type):
+    if media_type == 'audio':
+        return download_audio(url)
+    else:
+        return download_video(url)
+
+
+def download():
     url = url_entry.get()
-    download_audio(url)
+    media_type = media_type_var.get()
 
-# Crear la ventana principal
+    file_name_destination = download_media(url, media_type)
+
+    result_label.config(text=f"{file_name_destination} downloaded successfully")
+
+
+# Main window
 window = tk.Tk()
-window.title("Descargar audio de YouTube")
+window.title("Download audio/video from YouTube " + VERSION)
 
-# Crear un marco para el cuadro de texto y el botón
-frame = tk.Frame(window)
+# Main frame
+main_frame = tk.Frame(window, padx=10, pady=10)
 
-# Crear un cuadro de texto para pegar la URL
-url_entry = tk.Entry(frame, width=50)
-url_entry.pack(side=tk.LEFT)
+# Text box for video URL
+url_label = tk.Label(main_frame, text="Youtube URL:")
+url_label.pack()
+
+url_entry = tk.Entry(main_frame, width=80)
+url_entry.pack()
+
+# Crear menú desplegable para elegir el tipo de medio a descargar
+media_type_var = tk.StringVar()
+media_type_var.set('audio')  # Valor predeterminado del menú desplegable
+media_type_label = tk.Label(main_frame, text="Tipo de medio:")
+media_type_label.pack()
+media_type_dropdown = tk.OptionMenu(main_frame, media_type_var, 'audio', 'video')
+media_type_dropdown.pack()
 
 # Crear un botón para iniciar la descarga
-download_button = tk.Button(frame, text="Descargar", command=on_click)
+download_button = tk.Button(main_frame, text="Download", command=download)
 download_button.pack(side=tk.LEFT)
 
-
-download_label = tk.Label(window, text="")
-download_label.pack()
+# Label for download complete message
+result_label = tk.Label(window, text="")
+result_label.pack()
 
 # Alinear el marco en el centro de la ventana
-frame.pack(pady=10)
+main_frame.pack(pady=10)
 
 # Iniciar el bucle principal de la GUI
 window.mainloop()
