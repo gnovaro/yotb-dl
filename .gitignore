@@ -1,0 +1,8 @@
+.idea
+dist
+build
+ffmpeg.exe
+yt-dlp.exe
+*.mp3
+*.mp4
+*.m4a
