@@ -8,13 +8,18 @@ Python GUI wrapper for download audio and video
 * ffmpeg (https://ffmpeg.org)
 * yt-dlp (https://github.com/yt-dlp/yt-dlp)
 
+## Install local dependencies
+```bash
+pip install -r requirements.txt
+```
+
 ## Generate binary
 Install pyinstaller
-```
+```bash
 pip install pyinstaller
 ```
 
 Generate the binary
-```
+```bash
 pyinstaller --onefile --noconsole yotb-dl.py
 ```
