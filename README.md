@@ -8,6 +8,20 @@ Python GUI wrapper for download audio and video
 * ffmpeg (https://ffmpeg.org)
 * yt-dlp (https://github.com/yt-dlp/yt-dlp)
 
+
+## Install Thinker as System Level
+Linux
+
+```bash
+sudo apt-get install python3-tk
+```
+
+MacOS
+
+```bash
+brew install python-tk
+```
+
 ## Install local dependencies
 ```bash
 pip install -r requirements.txt

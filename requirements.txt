@@ -1,2 +1,2 @@
-setuptools~=41.2.0
-tkinter
+setuptools
+pyinstaller
